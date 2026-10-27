@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a0610">
+<title>ワイン紹介 — Wine Tasting</title>
+<style>
+:root{
+  --bg:#faf6ef; --card:#ffffff; --ink:#2b211b; --sub:#6e5f55;
+  --main:#6a1430; --main2:#8e2440; --gold:#c08a3e; --gold-l:#f3e6cf;
+  --line:#e7dccb; --chip:#f6efe3; --shadow:0 4px 18px rgba(80,40,10,.08);
+  --wine:var(--main2); --accent:var(--main2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:15px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+.serif,.whead h1,.ttl,.hero h1,.hero .tag,.msg .q{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif}
+a{color:var(--main2)}
+b{color:inherit}
+
+/* ===== hero ===== */
+header.hero{background:linear-gradient(135deg,#2a0610 0%,#6a1430 60%,#a8473a 100%);color:#fff;text-align:center;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+.hero .ttlrow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .emo{font-size:18px;letter-spacing:2px}
+.hero h1{font-size:22px;margin:0;letter-spacing:.06em;font-weight:600}
+.hero .tag{color:#f3d9a8;font-size:12px;letter-spacing:.18em}
+.hero .event{margin-top:6px;font-size:14px;font-weight:600;letter-spacing:.04em}
+.hero .event span{opacity:.6;margin:0 6px}
+.hero .hlead{margin-top:2px;font-size:12px;opacity:.85}
+
+/* ===== tabs ===== */
+nav.tabs{position:sticky;top:0;z-index:20;background:rgba(250,246,239,.96);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-top:env(safe-area-inset-top)}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{display:inline-block;padding:11px 13px;font-size:13px;color:var(--sub);text-decoration:none;border-bottom:3px solid transparent}
+nav.tabs a.on{color:var(--main);border-bottom-color:var(--gold);font-weight:700}
+
+main.wrap{max-width:760px;margin:0 auto;padding:22px 16px 40px}
+.page{scroll-margin-top:52px}
+
+/* ===== card ===== */
+.card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 20px;margin-bottom:18px;border:1px solid var(--line)}
+.ttl{font-size:22px;color:var(--main);line-height:1.4}
+.intro{margin-top:8px;color:var(--sub);font-size:13px}
+
+/* list (index) */
+.list a{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);padding:12px 4px;border-bottom:1px solid var(--line)}
+.list a:last-child{border-bottom:none}
+.list .n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--main);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+.list .t{font-weight:700;line-height:1.5}
+.list .d{font-size:12px;color:var(--sub)}
+.badge{font-size:11px;border-radius:6px;padding:1px 8px;background:var(--gold-l);color:var(--main2);margin-right:6px;white-space:nowrap}
+
+/* ===== wine header inside card ===== */
+.whead .no{display:inline-block;font-size:12px;color:#fff;background:var(--main);border-radius:999px;padding:2px 12px;letter-spacing:.08em}
+.whead .title{display:flex;align-items:flex-start;gap:8px;margin-top:10px}
+.whead .glass{font-size:22px;line-height:1.4}
+.whead h1{font-size:22px;color:var(--main);line-height:1.4;font-weight:600}
+.whead h1 small{display:block;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;font-size:13px;color:var(--gold);letter-spacing:.06em;font-style:normal;font-weight:500;margin-top:2px}
+.whead .ja{font-size:13px;color:var(--sub);margin-top:6px}
+
+/* lead + bottle */
+.lead{display:flex;gap:12px;align-items:stretch;margin-top:14px}
+.lead blockquote{flex:1;background:var(--gold-l);border-left:4px solid var(--gold);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--ink)}
+.lead blockquote b{color:var(--main)}
+.bottle{flex:0 0 92px;background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;padding:8px}
+.bottle svg{height:126px;width:auto}
+.bottle img{max-height:126px;max-width:100%;width:auto;height:auto;object-fit:contain;display:block}
+.bottle img + svg{display:none}
+
+/* sections */
+.wbody h2{font-size:16px;color:var(--main);margin:22px 0 10px;padding-bottom:6px;border-bottom:1px dashed var(--line);font-weight:700}
+.wbody p{font-size:14px}
+.row{margin-top:8px;font-size:14px}
+.row b{color:var(--main2);margin-right:4px}
+.wbody p b{color:var(--main2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.chip{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:13px;color:var(--ink)}
+.chip.pink{color:var(--main2);font-weight:600}
+.chip.green{color:#5b6b3a}
+.chip.gold,.chip.award{background:var(--gold-l);border-color:#e6cfa5;color:var(--main2);font-weight:600}
+.chip.blue{color:#3f5f75}
+.box{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fffdf9;margin-top:6px}
+.emo{font-size:22px;letter-spacing:4px;margin-bottom:4px}
+
+.parcel,.legend .item{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.parcel:last-child,.legend .item:last-child{border-bottom:none}
+.parcel .dot,.legend .dot{flex:0 0 10px;height:10px;border-radius:50%;margin-top:8px}
+.parcel h3,.legend h3{font-size:15px;color:var(--main)}
+.parcel p,.legend p{font-size:13.5px;color:var(--sub)}
+.role{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;margin-left:6px;color:#fff}
+.blend{display:flex;height:28px;border-radius:10px;overflow:hidden;margin:6px 0 10px;font-size:12px;font-weight:700;color:#fff}
+.blend div{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.fact{background:var(--chip);border-radius:10px;padding:10px 6px;text-align:center}
+.fact strong{display:block;font-size:19px;color:var(--main);line-height:1.3;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+.fact span{font-size:11px;color:var(--sub)}
+.steps{counter-reset:s}
+.step{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:none}
+.step::before{counter-increment:s;content:counter(s);flex:0 0 24px;height:24px;border-radius:50%;background:var(--main);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.step p{font-size:14px}
+.step b{color:var(--main2)}
+
+.meter{display:grid;grid-template-columns:76px 1fr;gap:6px 10px;align-items:center;margin-top:10px;font-size:13px;color:var(--sub)}
+.bar{height:8px;background:var(--chip);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--main));border-radius:4px}
+
+details{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fffdf9;overflow:hidden}
+summary{list-style:none;cursor:pointer;padding:12px 14px;font-size:14px;font-weight:700;color:var(--main);display:flex;justify-content:space-between;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";color:var(--gold);font-weight:800}
+details[open] summary::after{content:"−"}
+details .in{padding:0 14px 14px;font-size:13.5px}
+details .in p{font-size:13.5px}
+details .in p+p{margin-top:8px}
+details .in b{color:var(--main2)}
+details.more{background:#fff;border-style:dashed}
+details.more summary{font-weight:600;color:var(--main2);font-size:13.5px}
+details.more .in>.row:first-child,details.more .in>p:first-child{margin-top:0}
+.more-h{margin-top:26px!important}
+.more-wrap>details:first-child{margin-top:4px}
+.blindbox{margin-top:16px;background:var(--chip);border:1px dashed var(--line);border-radius:12px;padding:28px 16px;text-align:center}
+.blindbox .badge{font-size:14px;padding:3px 14px}
+.blindbox p{margin-top:10px;font-size:14px;color:var(--sub)}
+details.serve{border-style:solid;background:#fffdf9}
+details.serve summary{font-size:15px;font-weight:700;color:var(--main)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cell{background:var(--chip);border-radius:10px;padding:10px 12px;font-size:13px}
+.cell span{display:block;color:var(--main2);font-weight:700;font-size:12px}
+.cell strong{font-weight:500;font-size:14px}
+.cell.full{grid-column:1/-1}
+.timeline{position:relative;height:34px;margin-top:12px}
+.timeline .track{position:absolute;left:0;right:0;top:12px;height:8px;background:var(--chip);border-radius:4px}
+.timeline .peak{position:absolute;top:12px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--main))}
+.timeline .now{position:absolute;top:4px;width:2px;height:24px;background:var(--ink)}
+.timeline .lbl{position:absolute;top:22px;font-size:11px;color:var(--sub);transform:translateX(-50%)}
+
+.msg{margin-top:22px;background:var(--gold-l);border-left:4px solid var(--gold);border-radius:8px;padding:14px 16px}
+.msg .q{font-size:17px;font-weight:700;color:var(--main);line-height:1.6}
+.msg .by{font-size:13px;color:var(--sub);margin-top:4px}
+.wfoot{font-size:11px!important;color:var(--sub);margin-top:16px}
+.foot{text-align:right;font-size:12px;color:var(--sub);margin-top:10px}
+
+/* glossary */
+.vc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;background:#fffdf9}
+.vc h4{color:var(--main);font-size:15px}
+.vc .en{font-size:12px;color:var(--gold);letter-spacing:.06em;margin-left:6px;font-weight:500}
+.vc p{font-size:13.5px}
+
+.home{display:block;text-align:center;margin:20px auto 0;font-size:14px;text-decoration:none;color:var(--main)}
+footer.site{text-align:center;font-size:12px;color:var(--sub);padding:10px 20px 20px}
+.back{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;
+  background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 22px;font-size:14px;font-weight:700;color:var(--main);
+  text-decoration:none;box-shadow:var(--shadow);white-space:nowrap;transition:opacity .25s,transform .25s}
+.back.hide{opacity:0;pointer-events:none;transform:translate(-50%,20px)}
+@media(max-width:560px){.whead h1,.ttl{font-size:20px}.hero h1{font-size:20px}}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="ttlrow"><span class="emo">🍇🍷</span><h1>ワイン紹介</h1><span class="tag">— Wine Tasting —</span></div>
+  <div class="event">2026年10月28日(水)<span>｜</span>エノフィリア</div>
+  <div class="hlead">10本テイスティング ／ 泡から甘口まで、世界を旅する</div>
+</header>
+<nav class="tabs" id="tabs">
+<a href="#winelist">🍷リスト</a>
+<a href="#w1" class="t-rose">🌸ロゼ泡</a>
+<a href="#w2" class="t-gold">🥂英国泡</a>
+<a href="#w3" class="t-sea">🌊チャコリ</a>
+<a href="#w4" class="t-lime">🌬️シャルドネ</a>
+<a href="#w5">❓No.5</a>
+<a href="#w6">❓No.6</a>
+<a href="#w7">❓No.7</a>
+<a href="#w8">❓No.8</a>
+<a href="#w9" class="t-lav">💎ナパ・カベルネ</a>
+<a href="#w10" class="t-gold">🍯貴腐甘口</a>
+<a href="#tips">📖豆知識</a>
+</nav>
+<main class="wrap">
+
+<section class="page" id="winelist">
+  <div class="card">
+    <div class="ttl">🍷 本日のワインリスト</div>
+    <div class="intro">気になるワインをタップすると、その紹介ページへ移動します。</div>
+    <div class="list" style="margin-top:8px">
+<a href="#w1"><span class="n">1</span><span><span class="badge">ロゼ泡(甘)</span><span class="t">アラン・ルナルダ＝ファッシュ ビュジェ・セルドン メトード・アンセストラル NV</span><br><span class="d">フランス/ビュジェ | ガメイ 主体 | NV</span></span></a>
+<a href="#w2"><span class="n">2</span><span><span class="badge">泡</span><span class="t">ラスフィニー クラシック・キュヴェ 2018</span><br><span class="d">イギリス/サセックス | ピノ・ノワール 主体 | 2018</span></span></a>
+<a href="#w3"><span class="n">3</span><span><span class="badge">白</span><span class="t">イチャスメンディ Nº7（ヌメロ・シエテ） 2021</span><br><span class="d">スペイン/バスク・ビスカイコ・チャコリーナ | オンダラビ・スリ 主体 | 2021</span></span></a>
+<a href="#w4"><span class="n">4</span><span><span class="badge">白</span><span class="t">ザ・ヒルト エステート シャルドネ サンタ・リタ・ヒルズ 2022</span><br><span class="d">アメリカ/カリフォルニア・サンタ・リタ・ヒルズ | シャルドネ | 2022</span></span></a>
+<a href="#w5"><span class="n">5</span><span><span class="badge">白</span><span class="t">？？</span></span></a>
+<a href="#w6"><span class="n">6</span><span><span class="badge">赤</span><span class="t">？？</span></span></a>
+<a href="#w7"><span class="n">7</span><span><span class="badge">赤</span><span class="t">？？</span></span></a>
+<a href="#w8"><span class="n">8</span><span><span class="badge">赤</span><span class="t">？？</span></span></a>
+<a href="#w9"><span class="n">9</span><span><span class="badge">赤(重)</span><span class="t">シュレイダー ダブル・ダイヤモンド カベルネ・ソーヴィニヨン オークヴィル 2019</span><br><span class="d">アメリカ/ナパ・ヴァレー | カベルネ・ソーヴィニヨン | 2019</span></span></a>
+<a href="#w10"><span class="n">10</span><span><span class="badge">甘口</span><span class="t">シャトー・ルーバンス サント・クロワ・デュ・モン 1995</span><br><span class="d">フランス/ボルドー | セミヨン 主体 | 1995</span></span></a>
+    </div>
+  </div>
+</section>
+
+<section class="page wine t-rose" id="w1">
+<div class="card">
+<div class="whead">
+  <div class="no">No.1</div>
+  <div class="title">
+    <span class="glass">🌸</span>
+    <h1>Bugey Cerdon Méthode Ancestrale NV<small>Alain Renardat-Fâche</small></h1>
+  </div>
+  <div class="ja">アラン・ルナルダ＝ファッシュ ビュジェ・セルドン メトード・アンセストラル NV</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      アルコールはわずか<b>8%</b>。ブドウ本来の甘みを残したまま、瓶の中で自然に泡が生まれる、<b>やさしい甘口のロゼ泡</b>。<br/>
+      シャンパーニュよりもずっと古い、<b>「祖先の製法」</b>で造られています。
+    </blockquote>
+<div class="bottle"><img alt="Renardat-Fâche Cerdon" class="bottle-photo" src="data:image/jpeg;base64,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"/>
+<svg viewbox="0 0 40 130">
+<rect fill="#c2185b" height="16" rx="2" width="9" x="15.5" y="0"></rect>
+<path d="M16.5 16h7v16c0 6 9.5 10 9.5 22v70a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4V54c0-12 9.5-16 9.5-22z" fill="#e88aa2" opacity=".92"></path>
+<path d="M30 56v64" opacity=".5" stroke="#fff" stroke-width="2"></path>
+<rect fill="#fbf7f2" height="34" width="22" x="9" y="80"></rect>
+<text fill="#8e244d" font-family="serif" font-size="3.6" letter-spacing=".3" text-anchor="middle" x="20" y="92">CERDON</text>
+<text fill="#555" font-family="serif" font-size="2.4" text-anchor="middle" x="20" y="99">BUGEY</text>
+<text fill="#666" font-family="serif" font-size="2" text-anchor="middle" x="20" y="106">RENARDAT-FÂCHE</text>
+</svg>
+</div>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip pink">🇫🇷 フランス／ビュジェ（サヴォワ・ジュラ近郊）</span>
+<span class="chip green">AOC Bugey Cerdon</span>
+<span class="chip">NV</span>
+</div>
+<p>リヨンとジュネーヴのあいだ、<b>ジュラ山脈の南のふもと</b>に広がるビュジェ地方。ドメーヌはセルドン地区のメリニャ村にあり、山あいの斜面にブドウ畑が点在します。</p>
+<p class="row"><b>🌤️ 気候</b>山に囲まれた冷涼な大陸性気候。ブドウはゆっくり熟し、爽やかな酸が残る。</p>
+
+
+
+<!-- 品種と造り -->
+<h2>🍇 品種と造り</h2>
+<div class="blend">
+<div style="width:70%;background:#b23a6b">ガメイ 70%</div>
+<div style="width:30%;background:#e58fa8">プールサール 30%</div>
+</div>
+<div class="box legend">
+<div class="item"><span class="dot" style="background:#b23a6b"></span>
+<div><h3>ガメイ 70%</h3><p>ボージョレで知られる品種。イチゴやラズベリーのような、みずみずしい赤い果実。</p></div></div>
+<div class="item"><span class="dot" style="background:#e58fa8"></span>
+<div><h3>プールサール 30%</h3><p>ジュラ地方の皮の薄い品種。赤い果実と白い花の香り、そしてほのかな苦みが甘さを引き締める。</p></div></div>
+</div>
+
+
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍓🍒🌸🍬</div>
+<p>イチゴ、ラズベリー、チェリーなどの赤い果実。そこに、プールサール由来の白い花の香りがふんわり重なります。</p>
+</div>
+<!-- 外観・味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>色は明るく鮮やかなロゼ。細かく持続する泡。口に含むと、甘酸っぱい赤い果実がはじけ、<b>甘さを酸とほのかな苦みが引き締める</b>ので、後味は意外なほど軽やか。</p>
+<div class="meter">
+<span>甘さ</span><div class="bar"><i style="width:65%"></i></div>
+<span>酸</span><div class="bar"><i style="width:60%"></i></div>
+<span>果実味</span><div class="bar"><i style="width:82%"></i></div>
+<span>泡の強さ</span><div class="bar"><i style="width:50%"></i></div>
+<span>アルコール感</span><div class="bar"><i style="width:15%"></i></div>
+</div>
+<!-- サービス -->
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🥧 タルト・オ・プラリーヌ（リヨンの郷土菓子）</span>
+<span class="chip">🍓 イチゴのタルト</span>
+<span class="chip">🥓 生ハム・サラミ</span>
+<span class="chip">🧀 フレッシュチーズ</span>
+<span class="chip">🍡 和菓子（いちご大福）</span>
+</div>
+<p class="row">赤い果実のデザートとは<b>色も味も</b>好相性。甘さがあるので、塩気のある生ハムと合わせる「甘じょっぱい」組み合わせも楽しい一本です。</p>
+<div class="msg">
+<div class="q">「ブドウが自分で泡をつくる、いちばん古い泡」</div>
+<div class="by">酵母も糖も加えない、山あいの村の家族が守ってきた、やさしいロゼの泡。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🪨 土壌</b>ジュラ山脈らしい石灰質の土壌が中心。</p><p class="row"><b>🏠 ドメーヌ</b>ルナルダ＝ファッシュ家は、この地で<b>8世代</b>にわたりブドウを育ててきた家族経営の造り手。ビュジェでは中世からブドウ栽培が続いています。</p></div></details><details>
+<summary>ビュジェという産地</summary>
+<div class="in">
+<p>ビュジェは、ブルゴーニュ、ジュラ、サヴォワ、ローヌ北部に囲まれた小さな産地。そのため、ガメイ（ボージョレ）、プールサール（ジュラ）、モンドゥーズ（サヴォワ）など、<b>周辺地域の品種が交差する</b>ユニークな場所です。</p>
+<p>AOCビュジェの中で「セルドン」は、メトード・アンセストラルによる甘口ロゼ泡だけが名乗れる地区名です。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><div class="box steps" style="margin-top:12px">
+<div class="step"><p>温度管理したタンクで、ブドウ自身の酵母による<b>発酵をスタート</b>。</p></div>
+<div class="step"><p>糖分が残っている途中で<b>軽くろ過</b>し、発酵中のまま瓶詰め。</p></div>
+<div class="step"><p>瓶の中で発酵が続き、<b>自然に泡が生まれる</b>。残った糖分がやさしい甘みに。</p></div>
+</div><div class="chips" style="margin-top:12px">
+<span class="chip">🍷 アルコール 8%</span>
+<span class="chip">🍬 やや甘口</span>
+<span class="chip">🌿 酵母・糖分の添加なし</span>
+</div></div></details><details>
+<summary>メトード・アンセストラル vs 伝統的製法</summary>
+<div class="in">
+<p><b>伝統的製法（シャンパーニュ方式）</b>は、一度発酵を終えたワインに<b>酵母と糖を加えて</b>瓶内で二次発酵させます。</p>
+<p><b>メトード・アンセストラル</b>は、<b>1回の発酵を途中で瓶に移して完了させる</b>方法。酵母も糖も加えず、ブドウ由来の糖だけで泡を生むため、アルコールは低く、甘みが自然に残ります。より古くからある製法とされ、ペティアン・ナチュレル（ペット・ナット）もこの仲間です。</p>
+<p>難しいのは、瓶に移すタイミング。早すぎれば圧が高くなりすぎ、遅すぎれば泡が弱くなる。残糖・アルコール・ガス圧のバランスを、自然の発酵の中で決める<b>職人技</b>です。販売店の資料では、残糖は約47 g/lとされています。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>6〜8℃（よく冷やして）</strong></div>
+<div class="cell"><span>シーン</span><strong>乾杯・食後のデザート</strong></div>
+<div class="cell full"><span>グラス</span><strong>フルート型 または 小ぶりの白ワイングラス</strong></div>
+</div><p class="row" style="margin-top:14px"><b>💡 ポイント</b>フレッシュさが命のワイン。熟成させず、<b>買ってから早めに</b>楽しむのがおすすめです。開栓時は泡が勢いよく出ることがあるので、よく冷やしてゆっくり開けて。</p></div></details></div>
+<p class="wfoot">Domaine Alain Renardat-Fâche · Bugey Cerdon Méthode Ancestrale NV<br>品種・アルコール・製法は生産者資料より。残糖は販売店資料より。味わいの表示は目安です。</p>
+<div class="foot">1 / 10</div></div>
+</div>
+</section>
+<section class="page wine t-gold" id="w2">
+<div class="card">
+<div class="whead">
+  <div class="no">No.2</div>
+  <div class="title">
+    <span class="glass">🥂</span>
+    <h1>Rathfinny Classic Cuvée 2018<small>Sussex Sparkling · Brut</small></h1>
+  </div>
+  <div class="ja">ラスフィニー クラシック・キュヴェ 2018</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      シャンパーニュと<b>同じ白亜（チョーク）の大地</b>が、海を越えてイギリスにも続いている――。<br/>
+      「10年に一度」と言われた2018年の太陽を閉じ込めた、<b>英国スパークリングの実力</b>を知る一本。
+    </blockquote>
+<div class="bottle"><img alt="Rathfinny Classic Cuvée" class="bottle-photo" src="data:image/jpeg;base64,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"/>
+<svg viewbox="0 0 40 130">
+<rect fill="#c9a24a" height="16" rx="2" width="9" x="15.5" y="0"></rect>
+<path d="M16.5 16h7v16c0 6 9.5 10 9.5 22v70a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4V54c0-12 9.5-16 9.5-22z" fill="#27321f"></path>
+<path d="M30 56v64" opacity=".6" stroke="#46553a" stroke-width="2"></path>
+<rect fill="#f7f3ea" height="34" width="22" x="9" y="80"></rect>
+<text fill="#2a2210" font-family="serif" font-size="3.6" letter-spacing=".4" text-anchor="middle" x="20" y="92">RATHFINNY</text>
+<text fill="#8a6a1f" font-family="serif" font-size="2.6" text-anchor="middle" x="20" y="99">CLASSIC CUVÉE</text>
+<text fill="#555" font-family="serif" font-size="3" text-anchor="middle" x="20" y="108">2018</text>
+</svg>
+</div>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip gold">🇬🇧 イギリス／イースト・サセックス</span>
+<span class="chip blue">English Sparkling Wine</span>
+<span class="chip">2018</span>
+</div>
+<p>ロンドンの南、サウス・ダウンズ国立公園の中にあるワイナリー。有名な白い断崖「セブン・シスターズ」から近く、<b>海までわずか約5km</b>。南向きの斜面にブドウ畑が広がります。</p>
+<p class="row"><b>☀️ 気候</b>冷涼な気候に、夏の長い日照。海が近いため、冷涼産地の大敵である<b>春の霜の被害が起きにくい</b>。</p>
+
+
+
+<!-- 品種 -->
+<h2>🍇 品種と造り</h2>
+<div class="blend">
+<div style="width:50%;background:#7b3a4a">ピノ・ノワール 50%</div>
+<div style="width:35%;background:#c9a24a">シャルドネ 35%</div>
+<div style="width:15%;background:#9c6b7a">PM</div>
+</div>
+<div class="box legend">
+<div class="item"><span class="dot" style="background:#7b3a4a"></span>
+<div><h3>ピノ・ノワール 50%</h3><p>果実の厚み・骨格。このキュヴェの軸。</p></div></div>
+<div class="item"><span class="dot" style="background:#c9a24a"></span>
+<div><h3>シャルドネ 35%</h3><p>爽やかな酸と上品さ、熟成のポテンシャル。</p></div></div>
+<div class="item"><span class="dot" style="background:#9c6b7a"></span>
+<div><h3>ピノ・ムニエ 15%</h3><p>親しみやすい果実味とまろやかさ。</p></div></div>
+</div>
+
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍑🫚🍞🍋🥐</div>
+<p>色はバターミルクのような淡い金色。白いプラムにジンジャーをひとふり、シナモントースト。熟成由来のパンや焼き菓子の香ばしさが、果実の香りと重なります。</p>
+</div>
+<!-- 味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>白桃やアプリコットのような豊かな果実に、カスタードクリーム（クレーム・パティシエール）のようなコク。余韻にはレモンの砂糖漬けを思わせる酸味が伸び、すっきり締めくくります。</p>
+<div class="meter">
+<span>酸</span><div class="bar"><i style="width:78%"></i></div>
+<span>果実味</span><div class="bar"><i style="width:70%"></i></div>
+<span>熟成感</span><div class="bar"><i style="width:62%"></i></div>
+<span>泡の細かさ</span><div class="bar"><i style="width:75%"></i></div>
+<span>甘さ</span><div class="bar"><i style="width:15%"></i></div>
+</div>
+<!-- ヴィンテージ -->
+<h2>📅 2018年はどんな年？</h2>
+<p>イギリスで<b>「この10年で最高の年」</b>と呼ばれるヴィンテージ。4月から暑さが続いて開花が早まり、7〜8月には記録的な暑さに。9月初めに大雨があったものの、10月の収穫期は好天で、<b>健全で糖と酸のバランスが理想的な</b>ブドウが収穫されました。</p>
+
+<!-- サービス -->
+
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🍝 アサリとフェンネルのリングイネ</span>
+<span class="chip">🦆 鴨の生ハム</span>
+<span class="chip">🐖 ハムのテリーヌ</span>
+<span class="chip">🍤 天ぷら</span>
+<span class="chip">🐟 白身魚のカルパッチョ</span>
+</div>
+<p class="row">生産者が勧めるのは、魚介のパスタからシャルキュトリーまで。日本なら、<b>高い酸と泡が油をすっきり流してくれる天ぷら</b>が好相性です。</p>
+<div class="msg">
+<div class="q">「海峡の向こうのチョークが育てた泡」</div>
+<div class="by">シャンパーニュと同じ大地、イギリスの冷涼さ、そして特別に暑かった2018年の夏。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🪨 土壌</b>薄い粘土質ローム（土）の下に<b>白亜（チョーク）</b>。水はけが良く、しかも乾いた夏にはチョークが水を蓄えてブドウに与える。シャンパーニュとよく似た条件です。</p><p class="row"><b>🌱 ワイナリー</b>2010年、マーク＆サラ・ドライヴァー夫妻が畑作農地を購入して創業。2012年に初めて植樹した、まだ若いワイナリーです。現在は230エーカー（約93ha）超。</p></div></details><details>
+<summary>なぜイギリスでスパークリング？</summary>
+<div class="in">
+<p>パリ盆地の白亜層はイギリス海峡の下を通ってイングランド南部まで続いています。サセックスの白い崖とシャンパーニュの地下セラーは、<b>地質的には「同じ石」</b>です。</p>
+<p>ラスフィニーは北緯約50.8度で、シャンパーニュ（約49度）よりさらに北。ブドウがゆっくり熟すため<b>酸がしっかり残る</b>ことが、泡のワインには大きな武器になります。温暖化で熟度が安定してきたことも、英国スパークリングの躍進の背景です。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><p class="row">シャンパーニュと同じ<b>伝統的製法（瓶内二次発酵）</b>。ステンレスタンクで16℃で発酵させ、瓶の中で酵母とともに<b>30か月</b>寝かせてから出荷されます。</p></div></details><details>
+<summary>テクニカルデータを読む</summary>
+<div class="in">
+<p><b>pH 3.10／総酸 6.6 g/l</b>：高い酸は冷涼産地らしさ。<b>マロラクティック発酵100%</b>で、リンゴ酸のシャープさを乳酸の丸みに変え、クリーミーな質感に。</p>
+<p><b>ドサージュ 5 g/l</b>：表示は「Brut（12 g/l未満）」ですが、数値はExtra Brut（0〜6 g/l）の範囲にも入る低さ。2018年の熟した果実があるから、糖分を足さなくてもバランスが取れる、という設計です。</p>
+<p><b>瓶内熟成30か月</b>：シャンパーニュのヴィンテージの最低熟成期間（36か月）に近い長さ。酵母の自己分解（オートリシス）が、トーストやカスタードのような香りを生みます。</p>
+<p><b>清澄剤：アイシングラス</b>（魚由来）を使用しているため、厳密にはヴィーガン対応ではありません。アルコール度数は12%。</p>
+<p>2018年は、このハウススタイル「Classic Cuvée」の<b>3番目のヴィンテージ</b>にあたります。</p>
+</div>
+</details><details>
+<summary>冷涼産地にとっての「暑い年」</summary>
+<div class="in">
+<p>シャンパーニュや英国のような冷涼産地では、暑い年は「酸が落ちて緩む」リスクと表裏一体。ただイギリスでは、もともとの高い酸があるため、2018年のような年はむしろ<b>熟度と酸が両立する当たり年</b>になりやすいのが特徴です。</p>
+<p>ブラインドで飲むと、英国らしいシャープな酸の上に、例年より丸い黄色系果実（アプリコット、プラム）が乗っている点が手がかりになります。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>8〜10℃</strong></div>
+<div class="cell"><span>シーン</span><strong>食前酒〜食中</strong></div>
+<div class="cell full"><span>グラス</span><strong>チューリップ型（白ワイングラスでもOK。香りが開きます）</strong></div>
+</div><p class="row" style="margin-top:14px"><b>⏳ 飲み頃の目安</b>いま飲み頃。熟成の香ばしさが増していく段階で、数年は楽しめる見込み。</p><div aria-hidden="true" class="timeline">
+<div class="track"></div>
+<div class="peak" style="left:30%;right:15%"></div>
+<div class="now" style="left:73%"></div>
+<span class="lbl" style="left:0;transform:none">2022 発売</span>
+<span class="lbl" style="left:73%">今</span>
+<span class="lbl" style="right:0;left:auto;transform:none">2030</span>
+</div></div></details></div>
+<p class="wfoot">Rathfinny Wine Estate · Classic Cuvée 2018<br>テクニカルデータは生産者資料より。飲み頃・味わいの表示は目安です。</p>
+<div class="foot">2 / 10</div></div>
+</div>
+</section>
+<section class="page wine t-sea" id="w3">
+<div class="card">
+<div class="whead">
+  <div class="no">No.3</div>
+  <div class="title">
+    <span class="glass">🥂</span>
+    <h1>Itsasmendi Nº7 2021<small>Bizkaiko Txakolina</small></h1>
+  </div>
+  <div class="ja">イチャスメンディ ビスカイコ・チャコリーナ イチャスメンディ・ヌメロ・シエテ 2021</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      「海（Itsas）」と「山（Mendi）」――その名のとおり、<b>大西洋と緑の丘</b>に挟まれたバスク地方の白。<br/>
+      軽やかな日常酒と思われがちなチャコリを、<b>熟成できる本格派の白</b>へと引き上げた一本です。
+    </blockquote>
+<div class="bottle"><img alt="Itsasmendi Nº7" class="bottle-photo" src="data:image/jpeg;base64,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"/>
+<svg viewbox="0 0 40 130">
+<rect fill="#2f5d62" height="12" rx="1" width="7" x="16.5" y="0"></rect>
+<path d="M16.5 12h7v24c0 6 8.5 10 8.5 20v68a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V56c0-10 8.5-14 8.5-20z" fill="#c9d8b6" opacity=".9"></path>
+<path d="M29 58v62" opacity=".5" stroke="#fff" stroke-width="2"></path>
+<rect fill="#fbfaf6" height="34" width="20" x="10" y="80"></rect>
+<text fill="#2f5d62" font-family="serif" font-size="11" font-weight="700" text-anchor="middle" x="20" y="96">7</text>
+<text fill="#333" font-family="serif" font-size="2.6" letter-spacing=".3" text-anchor="middle" x="20" y="104">ITSASMENDI</text>
+<text fill="#666" font-family="serif" font-size="2.2" text-anchor="middle" x="20" y="109">2021</text>
+</svg>
+</div>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip pink">🇪🇸 スペイン／バスク地方</span>
+<span class="chip green">D.O. Bizkaiko Txakolina</span>
+<span class="chip">2021</span>
+</div>
+<p>ビルバオの東、ビスケー湾に面した<b>ウルダイバイ</b>。ユネスコの生物圏保護区に指定された、豊かな自然が残るエリアです。ワイナリーはピカソの絵で知られる町<b>ゲルニカ</b>にあります。</p>
+<p class="row"><b>🌧️ 気候</b>大西洋の影響を強く受けた、涼しく雨の多い海洋性気候。スペインといっても「乾いた太陽の国」とは正反対で、緑の丘が広がります。</p>
+
+
+
+<!-- 品種と造り -->
+<h2>🍇 品種と造り</h2>
+<div class="blend">
+<div style="width:42%;background:#5f9c7c">HZ 42%</div>
+<div style="width:38%;background:#8fbf8a">HZ セラティア 38%</div>
+<div style="width:20%;background:#c9a24a">リースリング</div>
+</div>
+<div class="box legend">
+<div class="item"><span class="dot" style="background:#5f9c7c"></span>
+<div><h3>オンダラビ・スリ 42%</h3><p>チャコリを代表する地元品種。爽やかな酸と柑橘、青リンゴの香り。</p></div></div>
+<div class="item"><span class="dot" style="background:#8fbf8a"></span>
+<div><h3>オンダラビ・スリ・セラティア 38%</h3><p>同じ名を持つ別系統のブドウ。果実の厚みと、熟成に耐える骨格を与える。</p></div></div>
+<div class="item"><span class="dot" style="background:#c9a24a"></span>
+<div><h3>リースリング 20%</h3><p>ドイツ生まれの品種。酸の伸びと、熟成で深まる香りの複雑さを加える。</p></div></div>
+</div>
+
+
+
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍑🍐🌼🌿🍃</div>
+<p>白桃などの核果、洋ナシ、黄色い花。そこにバルサミックなニュアンスや、ミント・ユーカリのような清涼感が重なります。グラスで時間を置くと、<b>澱熟成由来の香ばしい香り</b>が現れます。</p>
+</div>
+<!-- 味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>引き締まった酸を軸に、澱熟成によるふくよかさとなめらかさ。余韻には<b>ほのかな苦み</b>が残り、それが長く心地よいフィニッシュにつながります。爽やかなだけでなく、食事を受け止める厚みのある白です。</p>
+<div class="meter">
+<span>酸</span><div class="bar"><i style="width:82%"></i></div>
+<span>ボディ</span><div class="bar"><i style="width:55%"></i></div>
+<span>果実味</span><div class="bar"><i style="width:62%"></i></div>
+<span>熟成感</span><div class="bar"><i style="width:50%"></i></div>
+<span>ミネラル</span><div class="bar"><i style="width:72%"></i></div>
+</div>
+<!-- サービス -->
+
+
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🐙 タコのグリル</span>
+<span class="chip">🍗 ローストチキン</span>
+<span class="chip">🐟 白身魚のバスク風（ピルピル）</span>
+<span class="chip">🦪 焼き牡蠣</span>
+<span class="chip">🍣 寿司（白身・光り物）</span>
+</div>
+<p class="row">脂ののった魚介と好相性。酸が脂を切り、澱の旨みが料理の旨みと重なります。日本なら、<b>寿司や塩焼きの魚</b>にもぴったりです。</p>
+<div class="msg">
+<div class="q">「海と山のあいだで、ゆっくり育った白」</div>
+<div class="by">若さが魅力のチャコリに、「時間」という新しい魅力を与えた一本。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🌿 栽培</b>湿気が多いため、病気との戦いが課題。ゲルニカ、ムヒカ、ブスツリアの町にまたがる畑を区画ごとに管理しています。</p><p class="row"><b>🏠 ワイナリー</b>1989年、チャコリの個性を守りながら品質をさらに高めたいと考えた造り手たちが創業。</p></div></details><details>
+<summary>3つの「チャコリ」DO</summary>
+<div class="in">
+<p>チャコリ（バスク語でTxakolina）は、バスク地方の3つのDOで造られます。海沿いのサン・セバスティアン周辺の<b>ゲタリアコ</b>、ビルバオを含む<b>ビスカイコ</b>（このワイン）、そして内陸の<b>アラバコ</b>です。</p>
+<p>ビスカイコはDOの中で最も面積が広く、地形も海沿いから内陸の谷まで変化に富むため、スタイルの幅も広いのが特徴です。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><p class="row">9つの小区画から厳選したブドウを、5,000〜10,000Lのステンレスタンクで<b>澱（おり）とともに9か月</b>熟成。樽は使わず、澱からくる厚みとまろやかな質感を引き出しています。</p></div></details><details>
+<summary>「シュール・リー」がチャコリを変えた</summary>
+<div class="in">
+<p>伝統的なチャコリは、高い酸、低めのアルコール、かすかな微発泡が特徴。バルでは瓶を高く掲げてグラスに注ぐ（エスカンシアール）ことで、泡と香りを立たせて飲まれてきました。</p>
+<p>イチャスメンディのNº7は、発酵後の酵母の澱と長く接触させる<b>シュール・リー</b>の手法でチャコリを造った先駆けとされています。澱がもたらすのは、口当たりのボリューム、なめらかさ、そして熟成による複雑な香り。<b>「チャコリは若いうちに飲むもの」という常識を覆した</b>一本として、熟成力を確かめる垂直試飲でも取り上げられてきました。</p>
+<p>なお、ブレンド比率はヴィンテージごとに変わります（上記は2021年の数値）。</p>
+</div>
+</details><details>
+<summary>オンダラビ・スリの正体</summary>
+<div class="in">
+<p>「オンダラビ・スリ」は長く地元名で呼ばれてきましたが、DNA研究の結果、<b>単一の品種ではなく、複数の品種がこの名で栽培されてきた</b>ことがわかってきています。</p>
+<p>また「セラティア」は、ピレネーを挟んだフランス南西部（ジュランソンなど）の<b>プティ・クルビュ</b>と同じ品種と同定されています。バスク地方が国境をまたいだ一つの文化圏であることを、ブドウも物語っています。</p>
+</div>
+</details><details>
+<summary>🎨 毎年変わるラベルアート</summary>
+<div class="in">
+<p>Nº7は2008年ヴィンテージから、<b>毎年異なるアーティストの写真作品</b>をラベルに使い、その年の個性を表現しています。</p>
+<p>2021年の作品は、エバ・ゴンサレスとダビッド・カストロによる<b>「KINTSUGI（金継ぎ）」</b>。テーマは「人生の傷あとの美しさ」。割れた器を金で継いで新たな美しさを生む日本の技法を、一年ごとの天候の試練を受け止めて生まれるワインに重ねています。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>10〜12℃</strong></div>
+<div class="cell"><span>注ぎ方</span><strong>普通に注いでOK</strong></div>
+<div class="cell full"><span>グラス</span><strong>やや大ぶりの白ワイングラス（香りの変化を楽しむ）</strong></div>
+</div><p class="row" style="margin-top:14px"><b>💡 ポイント</b>冷やしすぎると澱由来の厚みと香りが閉じてしまいます。高く掲げて注ぐ伝統的なチャコリとは違い、<b>じっくり味わうタイプ</b>です。</p><p class="row"><b>⏳ 飲み頃の目安</b>熟成のポテンシャルは4〜5年とされ、2021年はちょうど熟成の妙味が出てくる時期。</p><div aria-hidden="true" class="timeline">
+<div class="track"></div>
+<div class="peak" style="left:15%;right:15%"></div>
+<div class="now" style="left:62%"></div>
+<span class="lbl" style="left:0;transform:none">2021</span>
+<span class="lbl" style="left:62%">今</span>
+<span class="lbl" style="right:0;left:auto;transform:none">2029</span>
+</div></div></details></div>
+<p class="wfoot">Bodegas Itsasmendi · Nº7 2021 · Bizkaiko Txakolina<br>品種比率は販売店掲載の生産者データより。味わい・飲み頃の表示は目安です。</p>
+<div class="foot">3 / 10</div></div>
+</div>
+</section>
+<section class="page wine t-lime" id="w4">
+<div class="card">
+<div class="whead">
+  <div class="no">No.4</div>
+  <div class="title">
+    <span class="glass">🌬️</span>
+    <h1>The Hilt Estate Chardonnay 2022<small>Sta. Rita Hills · California</small></h1>
+  </div>
+  <div class="ja">ザ・ヒルト エステート シャルドネ サンタ・リタ・ヒルズ 2022</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      太平洋からの<b>霧と強い風</b>が吹き抜ける、カリフォルニアでも指折りの冷涼な丘。<br/>
+      「カリフォルニアのシャルドネ＝濃厚」というイメージを変える、<b>果実の豊かさと引き締まった酸</b>を両立した一本です。
+    </blockquote>
+<div aria-hidden="true" class="bottle">
+<svg viewbox="0 0 40 130">
+<rect fill="#2b2b2b" height="12" rx="1" width="7" x="16.5" y="0"></rect>
+<path d="M16.5 12h7v24c0 6 8.5 10 8.5 20v68a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V56c0-10 8.5-14 8.5-20z" fill="#c9c08a" opacity=".9"></path>
+<path d="M29 58v62" opacity=".5" stroke="#fff" stroke-width="2"></path>
+<rect fill="#fbfaf6" height="34" width="20" x="10" y="80"></rect>
+<path d="M20 84v12M17 87h6" stroke="#2b2b2b" stroke-width=".8"></path>
+<text fill="#2b2b2b" font-family="serif" font-size="3.4" letter-spacing=".4" text-anchor="middle" x="20" y="102">THE HILT</text>
+<text fill="#666" font-family="serif" font-size="2" text-anchor="middle" x="20" y="107">CHARDONNAY</text>
+<text fill="#666" font-family="serif" font-size="2" text-anchor="middle" x="20" y="111">2022</text>
+</svg>
+</div>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip pink">🇺🇸 アメリカ／カリフォルニア・サンタ・バーバラ郡</span>
+<span class="chip green">Sta. Rita Hills AVA</span>
+<span class="chip">2022</span>
+</div>
+<p>ロサンゼルスの北西、サンタ・バーバラ郡にある<b>サンタ・リタ・ヒルズ</b>。サンタ・イネズ・ヴァレーの中で最も西にあり、最も冷涼なエリアです。</p>
+<p class="row"><b>🌬️ 気候</b>カリフォルニアでは珍しく、谷が<b>東西に開いている</b>ため、太平洋の冷たい風と霧がまっすぐ流れ込む。日照は豊富でも、ブドウはゆっくり熟し、しっかり酸が残る。</p>
+
+
+
+
+<!-- 3つの畑 -->
+
+
+<!-- 造り手 -->
+<h2>👥 造り手</h2>
+<p>ザ・ヒルトは2008年創業。サンタ・イネズ・ヴァレーの人気ワイナリー<b>ジョナタ</b>と同じオーナーによる、ピノ・ノワールとシャルドネに特化したワイナリーです。2014年に現在の本拠地<b>「ランチョ・サルシプエデス」</b>を取得しました。</p>
+
+
+<!-- 品種と造り -->
+<h2>🍇 品種と造り</h2>
+<div class="chips"><span class="chip">🟡 シャルドネ 100%</span></div>
+
+
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍑🍑🍍🔥🪨</div>
+<p>みずみずしい白桃、ジューシーなアプリコット、スパイスをまとったトロピカルフルーツ。樽由来のほのかなトーストと、繊細なミネラル感。</p>
+</div>
+<!-- 味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>熟した果実味が、なめらかに口の中を満たします。樽の風味は控えめに全体を支え、余韻には<b>火打ち石のような（フリンティな）</b>引き締まったニュアンス。豊かさとシャープさが同居するシャルドネです。</p>
+<div class="meter">
+<span>酸</span><div class="bar"><i style="width:75%"></i></div>
+<span>ボディ</span><div class="bar"><i style="width:68%"></i></div>
+<span>果実味</span><div class="bar"><i style="width:78%"></i></div>
+<span>樽の風味</span><div class="bar"><i style="width:50%"></i></div>
+<span>ミネラル</span><div class="bar"><i style="width:70%"></i></div>
+</div>
+<!-- サービス -->
+
+
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🦞 オマール海老・伊勢海老</span>
+<span class="chip">🐟 白身魚のムニエル</span>
+<span class="chip">🍗 鶏のクリーム煮</span>
+<span class="chip">🦪 ホタテのバター焼き</span>
+<span class="chip">🍤 天ぷら（塩で）</span>
+</div>
+<p class="row">果実の豊かさと引き締まった酸があるので、<b>バターやクリームを使った魚介料理</b>と好相性。酸がソースのコクを軽やかにしてくれます。</p>
+<div class="msg">
+<div class="q">「霧と風が磨いた、カリフォルニアの冷涼なシャルドネ」</div>
+<div class="by">手強い土地「サルシプエデス」から生まれた、豊かさと緊張感をあわせ持つ一本。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🪨 土壌</b>水はけの良い、やせた土壌。ヒルトの畑には、白い粉のような<b>珪藻土（けいそうど）</b>や砂質ロームが見られる。</p><p class="row"><b>🏞️ 畑</b>アペラシオン南西端にある自社畑 <b>ラディアン、ベントロック、プエルタ・デル・マール</b> の3つのブドウをブレンド。</p></div></details><details>
+<summary>なぜ「Santa」ではなく「Sta.」？</summary>
+<div class="in">
+<p>このAVAは2001年に「サンタ・リタ・ヒルズ（Santa Rita Hills）」として認定されましたが、チリの大手ワイナリー<b>「サンタ・リタ（Viña Santa Rita）」</b>との商標の問題から、略称の<b>「Sta. Rita Hills」</b>を正式名称として使うことになりました。</p>
+<p>読み方は同じ「サンタ・リタ」。ラベルの小さな「Sta.」に、ワインの国際ビジネスの一面がのぞきます。</p>
+</div>
+</details><details>
+<summary>珪藻土（ダイアトマシャス・アース）</summary>
+<div class="in">
+<p>珪藻土は、<b>珪藻という単細胞の藻類の化石</b>が積み重なってできた土。遠目にはチョーク（白亜）のように見えますが、成分はチョークの炭酸カルシウムではなく<b>シリカ（二酸化ケイ素）</b>です。</p>
+<p>どちらも多孔質で水はけがよく、やせているという点で、生産者は<b>シャンパーニュやシャブリの石灰質と似た働き</b>をすると説明しています。ブドウの根は栄養を求めて深く伸び、凝縮した小粒の実をつけます。</p>
+</div>
+</details><details class="more"><summary>🗺️ 3つの自社畑</summary><div class="in"><div class="box">
+<div class="parcel">
+<span class="dot" style="background:#5f7f9c"></span>
+<div><h3>ラディアン<span class="role" style="background:#5f7f9c">冷涼・鋭さ</span></h3>
+<p>西側、標高最高約700フィート（約210m）。最大45度の急斜面と強風。醸造家が「最も寒く、最も手強い」と呼ぶ畑で、氷のように澄んだ酸のシャルドネが生まれる。</p></div>
+</div>
+<div class="parcel">
+<span class="dot" style="background:#c08a3e"></span>
+<div><h3>ベントロック<span class="role" style="background:#c08a3e">豊かさ</span></h3>
+<p>東側、標高400〜500フィート超のなだらかな丘。ラディアンより少し暖かく、果実味あふれるシャルドネに。粘土・頁岩（けつがん）・珪藻土の土壌。</p></div>
+</div>
+<div class="parcel">
+<span class="dot" style="background:#8fbf8a"></span>
+<div><h3>プエルタ・デル・マール<span class="role" style="background:#6fa88a">海の扉</span></h3>
+<p>スペイン語で「海の扉」。太平洋から約10〜11マイル（約17km）、エステートの最西端。ワイナリーとテイスティングルームがある場所。</p></div>
+</div>
+</div></div></details><details class="more"><summary>🏠 ワイナリーのこと</summary><div class="in"><p class="row">醸造家<b>マット・ディース</b>氏が、畑からボトルまでを一貫して手がけます。2014年以降、自社畑では<b>除草剤・殺虫剤を使っていません</b>。</p></div></details><details>
+<summary>「サルシプエデス」の意味</summary>
+<div class="in">
+<p>サルシプエデス（Salsipuedes）は、スペイン語で<b>「出られるものなら出てみろ」</b>という意味の言葉に由来する地名とされています。急斜面、強風、霧――人にもブドウにも厳しい土地であることを物語る名前です。</p>
+<p>ワイナリー名の「Hilt」は剣の柄（つか）のこと。手強い土地を手なずけて、その個性をワインに引き出す、という思いが感じられます。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><div class="box steps">
+<div class="step"><p>3つの自社畑のブドウを圧搾。</p></div>
+<div class="step"><p>フレンチオーク樽（一部は新樽）と、少量のステンレスタンクで発酵・熟成。</p></div>
+<div class="step"><p>約<b>11か月</b>熟成させて瓶詰め。</p></div>
+</div><div class="facts">
+<div class="fact"><strong>35%</strong><span>新樽（フレンチ）</span></div>
+<div class="fact"><strong>60%</strong><span>古樽（フレンチ）</span></div>
+<div class="fact"><strong>5%</strong><span>ステンレス</span></div>
+</div></div></details><details>
+<summary>樽・MLF・バトナージュの設計</summary>
+<div class="in">
+<p>販売店の情報では、マロラクティック発酵（MLF）は<b>一部（約30%）だけ</b>、澱をかき混ぜる<b>バトナージュは行わない</b>とされています。</p>
+<p>MLFを全量行えばバターのような丸みが強く出ますが、一部に抑えることで、リンゴ酸由来の<b>鮮やかな酸</b>を残しています。バトナージュをしないのも、厚みより<b>透明感と緊張感</b>を優先するため。冷涼な畑の酸と、新樽35%の香ばしさを、ちょうどよく釣り合わせる設計と読み取れます。</p>
+<p>※樽の比率は資料によって「新樽約40%」とするものもあり、数値はヴィンテージごとに変わる可能性があります。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>10〜13℃</strong></div>
+<div class="cell"><span>シーン</span><strong>食中・魚や鶏料理と</strong></div>
+<div class="cell full"><span>グラス</span><strong>口のすぼまった、やや大ぶりの白ワイングラス</strong></div>
+</div><p class="row" style="margin-top:14px"><b>💡 ポイント</b>冷やしすぎると樽の香りと果実の厚みが閉じてしまいます。グラスの中で温度が少し上がると、香りが一段と開きます。</p><p class="row"><b>⏳ 飲み頃の目安</b>いまから楽しめ、数年の熟成で香ばしさと複雑さが増していく見込み。</p><div aria-hidden="true" class="timeline">
+<div class="track"></div>
+<div class="peak" style="left:15%;right:15%"></div>
+<div class="now" style="left:35%"></div>
+<span class="lbl" style="left:0;transform:none">2022</span>
+<span class="lbl" style="left:35%">今</span>
+<span class="lbl" style="right:0;left:auto;transform:none">2032</span>
+</div></div></details></div>
+<p class="wfoot">The Hilt Estate · Estate Chardonnay Sta. Rita Hills 2022<br>畑・土壌は生産者資料、樽・MLFの数値は販売店資料より。味わい・飲み頃の表示は目安です。</p>
+<div class="foot">4 / 10</div></div>
+</div>
+</section>
+<section class="page wine blind" id="w5">
+<div class="card">
+<div class="whead"><div class="no">No.5</div><div class="title"><span class="glass">❓</span><h1>？？</h1></div></div>
+<div class="wbody"><div class="blindbox"><span class="badge">白</span><p>このワインはブラインドでお楽しみください。</p></div>
+<div class="foot">5 / 10</div></div>
+</div>
+</section>
+<section class="page wine blind" id="w6">
+<div class="card">
+<div class="whead"><div class="no">No.6</div><div class="title"><span class="glass">❓</span><h1>？？</h1></div></div>
+<div class="wbody"><div class="blindbox"><span class="badge">赤</span><p>このワインはブラインドでお楽しみください。</p></div>
+<div class="foot">6 / 10</div></div>
+</div>
+</section>
+<section class="page wine blind" id="w7">
+<div class="card">
+<div class="whead"><div class="no">No.7</div><div class="title"><span class="glass">❓</span><h1>？？</h1></div></div>
+<div class="wbody"><div class="blindbox"><span class="badge">赤</span><p>このワインはブラインドでお楽しみください。</p></div>
+<div class="foot">7 / 10</div></div>
+</div>
+</section>
+<section class="page wine blind" id="w8">
+<div class="card">
+<div class="whead"><div class="no">No.8</div><div class="title"><span class="glass">❓</span><h1>？？</h1></div></div>
+<div class="wbody"><div class="blindbox"><span class="badge">赤</span><p>このワインはブラインドでお楽しみください。</p></div>
+<div class="foot">8 / 10</div></div>
+</div>
+</section>
+<section class="page wine t-lav" id="w9">
+<div class="card">
+<div class="whead">
+  <div class="no">No.9</div>
+  <div class="title">
+    <span class="glass">🍷</span>
+    <h1>Double Diamond Cabernet Sauvignon 2019<small>Oakville · Napa Valley</small></h1>
+  </div>
+  <div class="ja">シュレイダー・セラーズ ダブル・ダイヤモンド カベルネ・ソーヴィニヨン オークヴィル ナパ・ヴァレー 2019</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      ナパ屈指の造り手シュレイダーが手がける「セカンドワイン」が、<b>ワイン・スペクテイター誌の2022年「年間第1位」</b>に。<br/>
+      伝説の畑<b>ト・カロン</b>の若木も使った、ナパ・カベルネの真髄を知る一本です。
+    </blockquote>
+<div class="bottle"><img alt="Double Diamond Cabernet Sauvignon" class="bottle-photo" src="data:image/jpeg;base64,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"/>
+<svg viewbox="0 0 40 130">
+<rect fill="#1b1b1b" height="12" rx="1" width="7" x="16.5" y="0"></rect>
+<path d="M16.5 12h7v20c0 4 9 6 9 14v78a4 4 0 0 1-4 4H11.5a4 4 0 0 1-4-4V46c0-8 9-10 9-14z" fill="#120809"></path>
+<path d="M29.5 50v70" opacity=".6" stroke="#3a2229" stroke-width="2"></path>
+<rect fill="#f4f1ea" height="36" width="21" x="9.5" y="78"></rect>
+<path d="M17 86l3-3 3 3-3 3z M20 86l3-3 3 3-3 3z" fill="none" stroke="#1b1b1b" stroke-width=".6" transform="translate(-1.5,0)"></path>
+<text fill="#1b1b1b" font-family="serif" font-size="2.8" letter-spacing=".3" text-anchor="middle" x="20" y="97">DOUBLE DIAMOND</text>
+<text fill="#7b1e3a" font-family="serif" font-size="2.2" text-anchor="middle" x="20" y="102">OAKVILLE</text>
+<text fill="#555" font-family="serif" font-size="2.2" text-anchor="middle" x="20" y="108">2019</text>
+</svg>
+</div>
+</div>
+<div class="chips" style="margin-top:14px">
+<span class="chip award">🏆 Wine Spectator「Wine of the Year 2022」第1位</span>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip pink">🇺🇸 アメリカ／カリフォルニア・ナパ・ヴァレー</span>
+<span class="chip green">Oakville AVA</span>
+<span class="chip">2019</span>
+</div>
+<p>ナパ・ヴァレーの中央部にある<b>オークヴィル</b>は、オーパス・ワンやロバート・モンダヴィなどの名門が並ぶ、ナパ・カベルネの「心臓部」とも言えるエリア。</p>
+<p class="row"><b>☀️ 気候</b>温暖な地中海性気候。日中は暑く、夜は南のサンパブロ湾から霧と冷気が入り込み、ブドウの酸と香りを守る。</p>
+
+
+
+<!-- 造り手 -->
+<h2>👥 造り手</h2>
+<p>シュレイダー・セラーズは、ト・カロンなど限られた畑の単一畑カベルネで知られるカルトワインの造り手。醸造家は、ナパでも屈指の評価を受ける<b>トーマス・リヴァーズ・ブラウン</b>氏です。</p>
+
+
+<!-- 品種と造り -->
+<h2>🍇 品種と造り</h2>
+<div class="chips"><span class="chip">⚫ カベルネ・ソーヴィニヨン 100%</span></div>
+<p>カベルネ・ソーヴィニヨンのみ。黒系果実の凝縮感、しっかりしたタンニン、長期熟成に耐える骨格を持つ品種で、ナパはその世界的な銘醸地です。</p>
+
+
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍇🫐🌿🌲🍫</div>
+<p>カシス、プラム、熟した赤い果実。ローリエ（月桂樹）のような甘くハーバルな香り、ナツメグ、焼いた杉。グラスの中で、ミントやチョコレートのニュアンスも顔を出します。</p>
+</div>
+<!-- 味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>ブラックベリーのコンポートのような濃密な果実に、カシス、ダークチョコレート。豊かでなめらかな口当たりと、きめ細かく熟したタンニン。リリース直後から楽しめる<b>ふくよかさ</b>と、ナパらしい<b>力強さ</b>の両方を備えています。</p>
+<div class="meter">
+<span>ボディ</span><div class="bar"><i style="width:88%"></i></div>
+<span>タンニン</span><div class="bar"><i style="width:75%"></i></div>
+<span>酸</span><div class="bar"><i style="width:55%"></i></div>
+<span>果実味</span><div class="bar"><i style="width:90%"></i></div>
+<span>樽の風味</span><div class="bar"><i style="width:62%"></i></div>
+</div>
+<!-- ヴィンテージ -->
+<h2>📅 2019年はどんな年？</h2>
+<p>ナパでは、比較的穏やかで、極端な熱波の少ない生育期となった年。ブドウがゆっくりと均一に熟し、<b>熟度と鮮度のバランスがとれた優良年</b>として評価されています。</p>
+
+<!-- サービス -->
+
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🥩 リブアイステーキ</span>
+<span class="chip">🐑 仔羊のロースト</span>
+<span class="chip">🍖 牛ほほ肉の赤ワイン煮</span>
+<span class="chip">🔥 炭火焼きの和牛</span>
+<span class="chip">🧀 熟成チェダー</span>
+</div>
+<p class="row">しっかりしたタンニンには、<b>脂ののった赤身肉</b>が好相性。肉の脂がタンニンをまろやかにし、ワインの果実味がより豊かに感じられます。</p>
+<div class="msg">
+<div class="q">「至高の畑と名匠が生んだ、もうひとつの宝石」</div>
+<div class="by">セカンドワインが、世界の年間1位に。造り手と畑で選ぶ楽しさを教えてくれる一本。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🪨 土壌</b>西側のマヤカマス山脈から流れ出た土砂が扇状に広がる、水はけの良い砂礫の土壌（ベンチランド）。</p><p class="row"><b>🍇 畑</b><b>ト・カロン</b>の若木の区画と、オークヴィル・クロス・ロード沿いの畑のブドウを使用。</p></div></details><details>
+<summary>伝説の畑「ト・カロン」</summary>
+<div class="in">
+<p>ト・カロン（To Kalon）は、1860年代にH.W.クラブが拓いた、ナパで最も有名な畑のひとつ。名前はギリシャ語で<b>「至高の美」</b>を意味するとされます。</p>
+<p>現在、この畑は複数の所有者に分かれ、その一部（ベクストファー家が所有する区画）のブドウが、シュレイダーのトップキュヴェにも使われています。ダブル・ダイヤモンドに入るのは、その<b>若木の区画</b>のブドウ。若木は樹齢が浅いぶん、果実味が素直で親しみやすく出やすいとされます。</p>
+</div>
+</details><details class="more"><summary>🏠 ワイナリーのこと</summary><div class="in"><p class="row">ダブル・ダイヤモンドは、そのシュレイダーが<b>トップキュヴェと同じ醸造家・同じこだわり</b>で造るセカンドライン。トップキュヴェよりずっと手の届きやすい価格で、シュレイダーのスタイルを知ることができます。</p></div></details><details>
+<summary>「セカンドワイン」が年間1位になった意味</summary>
+<div class="in">
+<p>ワイン・スペクテイター誌は、2019年のダブル・ダイヤモンドを2022年の年間第1位に選び、その理由を<b>「品質と価格の両立」</b>と説明しました。高額なナパ・カベルネがあふれる中で、トップクラスの価格帯を大きく下回りながら、それを上回る品質を示した点が評価されています。</p>
+<p>同誌は、偉大な畑と偉大な醸造家の組み合わせから生まれるセカンドワインは見過ごすべきではない、とも書いています。ボルドーの格付けシャトーのセカンドと同じ発想で、<b>「造り手」と「畑」で選ぶ</b>という視点を教えてくれる一本です。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><div class="facts">
+<div class="fact"><strong>100%</strong><span>カベルネ</span></div>
+<div class="fact"><strong>16か月</strong><span>樽熟成</span></div>
+<div class="fact"><strong>50%</strong><span>新樽比率</span></div>
+</div><p class="row" style="margin-top:12px">フレンチオーク樽で16か月熟成、そのうち半分が新樽。樽由来のトーストやスパイスの香りが、果実の厚みを支えます。</p></div></details><details>
+<summary>新樽50%というバランス</summary>
+<div class="in">
+<p>ナパのトップカベルネでは新樽100%も珍しくありません。50%に抑えることで、樽由来のバニラやトーストの香りを効かせつつ、<b>果実の鮮やかさを前面に残す</b>設計と読み取れます。</p>
+<p>リリース直後から楽しめることを重視したセカンドワインらしい選択で、それでいて熟成のポテンシャルも十分に備えています。</p>
+</div>
+</details><details>
+<summary>2019と前後の年</summary>
+<div class="in">
+<p>翌2020年は大規模な山火事の影響を受け、煙の影響を懸念してリリースを見送った造り手も多かった年。その直前の2019年は、品質・量ともに安定した年として、コレクターからも注目されています。</p>
+<p>ブラインドでは、温暖産地らしい熟した黒系果実と樽の風味に加え、ミントやローリエなどのハーバルな要素が、ナパ・カベルネを見分ける手がかりになります。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>16〜18℃</strong></div>
+<div class="cell"><span>デキャンタ</span><strong>1時間ほど</strong></div>
+<div class="cell full"><span>グラス</span><strong>大ぶりのボルドー型</strong></div>
+</div><p class="row" style="margin-top:14px"><b>⏳ 飲み頃の目安</b>リリース直後から楽しめ、熟成によってさらに複雑さが増していくタイプ。</p><div aria-hidden="true" class="timeline">
+<div class="track"></div>
+<div class="peak" style="left:12%;right:8%"></div>
+<div class="now" style="left:30%"></div>
+<span class="lbl" style="left:0;transform:none">2022</span>
+<span class="lbl" style="left:30%">今</span>
+<span class="lbl" style="right:0;left:auto;transform:none">2035</span>
+</div></div></details></div>
+<p class="wfoot">Schrader Cellars · Double Diamond Cabernet Sauvignon Oakville 2019<br>樽熟成の数値は販売店掲載の情報より。味わい・飲み頃の表示は目安です。</p>
+<div class="foot">9 / 10</div></div>
+</div>
+</section>
+<section class="page wine t-gold" id="w10">
+<div class="card">
+<div class="whead">
+  <div class="no">No.10</div>
+  <div class="title">
+    <span class="glass">🍯</span>
+    <h1>Château Loubens 1995<small>Sainte-Croix-du-Mont · Bordeaux</small></h1>
+  </div>
+  <div class="ja">シャトー・ルーバンス サント・クロワ・デュ・モン 1995</div>
+</div>
+<div class="wbody">
+<div class="lead">
+<blockquote>
+      ソーテルヌの<b>対岸</b>で造られる、貴腐ブドウの甘口ワイン。<br/>
+      太古の<b>牡蠣の化石</b>でできた岩盤のセラーで、<b>30年</b>の時を重ねた一本です。
+    </blockquote>
+<div class="bottle"><img alt="Château Loubens 1995" class="bottle-photo" src="data:image/jpeg;base64,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"/>
+<svg viewbox="0 0 40 130">
+<rect fill="#7a5a1a" height="12" rx="1" width="7" x="16.5" y="0"></rect>
+<path d="M16.5 12h7v20c0 4 9 6 9 14v78a4 4 0 0 1-4 4H11.5a4 4 0 0 1-4-4V46c0-8 9-10 9-14z" fill="#b8741f" opacity=".92"></path>
+<path d="M29.5 50v70" opacity=".4" stroke="#fff" stroke-width="2"></path>
+<rect fill="#f6f1e4" height="36" width="21" x="9.5" y="78"></rect>
+<text fill="#2b2b2b" font-family="serif" font-size="2.6" letter-spacing=".2" text-anchor="middle" x="20" y="90">CHÂTEAU</text>
+<text fill="#6a1430" font-family="serif" font-size="3.6" text-anchor="middle" x="20" y="96">LOUBENS</text>
+<text fill="#555" font-family="serif" font-size="1.8" text-anchor="middle" x="20" y="102">SAINTE-CROIX-DU-MONT</text>
+<text fill="#555" font-family="serif" font-size="2.4" text-anchor="middle" x="20" y="108">1995</text>
+</svg>
+</div>
+</div>
+<!-- 産地 -->
+<h2>🌍 産地</h2>
+<div class="chips">
+<span class="chip pink">🇫🇷 フランス／ボルドー</span>
+<span class="chip green">AOC Sainte-Croix-du-Mont</span>
+<span class="chip">1995</span>
+</div>
+<p>ボルドー市の南東、ガロンヌ川の右岸。川をはさんだ<b>向かい側</b>には、世界的な貴腐ワインの産地ソーテルヌとバルサックがあります。</p>
+<p class="row"><b>🌤️ 気候</b>秋、川からの<b>朝霧</b>と日中の暖かさが交互に訪れる。この条件が、ブドウに「貴腐菌」がつくのを助ける。</p>
+
+
+
+<!-- 造り手 -->
+<h2>👥 造り手</h2>
+<p>シャトーのセラーは、<b>牡蠣の化石の岩盤をくりぬいた洞窟</b>。壁には貝殻が肉眼で見えるほどで、ここで新しいヴィンテージから数十年前のものまで、ボトルが静かに眠っています。</p>
+
+
+<!-- 品種と造り -->
+<h2>🍇 品種と造り</h2>
+<div class="chips"><span class="chip">🟡 セミヨン 主体</span></div>
+<p>貴腐がつきやすいセミヨンが主体。資料によってはセミヨンのみ、またはソーヴィニヨン・ブランやミュスカデルを少量含むとされます。</p>
+
+
+<!-- ヴィンテージ -->
+<h2>📅 1995年と「30年」の熟成</h2>
+<p>収穫からおよそ30年。貴腐ワインは糖分と酸が保存料の役割を果たし、<b>数十年単位で熟成</b>できるワインです。若い頃の鮮やかな果実は、時間とともに<b>琥珀色</b>の深い色合いと、カラメルやドライフルーツの香りへと変化していきます。</p>
+
+<!-- 香り -->
+<h2>👃 香り（Aroma）</h2>
+<div class="box">
+<div class="emo">🍯🍑🍊🍮🌰</div>
+<p>熟成した貴腐ワインらしい、蜂蜜、ドライアプリコット、マーマレード、カラメル。時間とともにナッツや紅茶、スパイスのニュアンスが現れます。</p>
+</div>
+<!-- 味わい -->
+<h2>👅 味わい（Palate）</h2>
+<p>とろりとした甘さを、熟成でまろやかになった酸が支え、余韻は長く香ばしい。若い甘口のような濃厚さより、<b>落ち着いた深みと複雑さ</b>を楽しむワインです。</p>
+<div class="meter">
+<span>甘さ</span><div class="bar"><i style="width:75%"></i></div>
+<span>酸</span><div class="bar"><i style="width:55%"></i></div>
+<span>熟成感</span><div class="bar"><i style="width:85%"></i></div>
+<span>ボディ</span><div class="bar"><i style="width:65%"></i></div>
+<span>余韻</span><div class="bar"><i style="width:80%"></i></div>
+</div>
+<!-- サービス -->
+
+
+
+<!-- ペアリング -->
+<h2>🍽️ 合わせたい料理</h2>
+<div class="chips">
+<span class="chip">🧀 ロックフォール（青カビチーズ）</span>
+<span class="chip">🦆 フォアグラ</span>
+<span class="chip">🥧 タルト・タタン</span>
+<span class="chip">🍮 クレーム・ブリュレ</span>
+<span class="chip">🌰 栗の和菓子</span>
+</div>
+<p class="row">ボルドーの定番は<b>青カビチーズ</b>や<b>フォアグラ</b>。甘さと塩気の組み合わせが絶妙です。熟成のカラメル香には、焼き菓子や栗のお菓子もよく合います。</p>
+<div class="msg">
+<div class="q">「化石の洞窟で30年眠った、琥珀色の甘い記憶」</div>
+<div class="by">ソーテルヌの対岸、牡蠣の化石の大地から届いた、時間そのものを味わう一本。</div>
+</div>
+<h2 class="more-h">🔍 もっと知りたい</h2><div class="more-wrap"><details class="more"><summary>🌱 栽培・土壌・ワイナリー</summary><div class="in"><p class="row"><b>🪨 土壌</b>丘の上の台地は、<b>第三紀の牡蠣の化石</b>が積み重なった石灰質。かつてここが海だった証です。</p><p class="row"><b>🏠 シャトー</b>当主アルノー・ド・セーズ氏（2017年の取材時点）が営む、約16haのシャトー。16世紀にはボルドー高等法院の議員が所有していたという、古い歴史を持ちます。サント・クロワ・デュ・モンを代表する造り手のひとつ。</p></div></details><details>
+<summary>サント・クロワ・デュ・モンとソーテルヌ</summary>
+<div class="in">
+<p>ボルドー南部のガロンヌ川沿いには、甘口ワインの産地が集まっています。左岸にソーテルヌ、バルサック、セロン。右岸にサント・クロワ・デュ・モン、ルーピアック、カディヤックなど。</p>
+<p>サント・クロワ・デュ・モンはブドウ畑が約400haと、ソーテルヌ（約1,800ha）より小さな産地。価格が手ごろで、<b>比較的早くから飲みやすい</b>貴腐ワインとして知られます。牡蠣化石の石灰質土壌は、ワインにミネラル感を与えるとも言われます。</p>
+</div>
+</details><details class="more"><summary>🏠 ワイナリーのこと</summary><div class="in"><p class="row">ラベルやキャップシールの装着も手作業。昔ながらの職人的な造りを守るシャトーです。</p></div></details><details>
+<summary>「古いヴィンテージ」を蔵出しするシャトー</summary>
+<div class="in">
+<p>ルーバンスは、自らのセラーで長期熟成させた古いヴィンテージを、今も蔵から直接出荷していることで知られます。2017年の取材記事では、<b>1971年ヴィンテージ</b>をセラーから販売していたと紹介されています。</p>
+<p>温度と湿度が安定した天然の洞窟セラーで眠ってきたボトルは、状態が良いことが多いのも魅力。この1995年も、<b>約30年の瓶熟成</b>を経た「飲み頃の熟成甘口」を手頃に体験できる、貴重な一本です。</p>
+</div>
+</details><details class="more"><summary>🔬 造りの詳細</summary><div class="in"><div class="box steps">
+<div class="step"><p>貴腐菌がついて糖分が凝縮したブドウを、手摘みで収穫。</p></div>
+<div class="step"><p>空気圧式のプレスで圧搾し、ステンレスタンクとセメントタンクで発酵・熟成。</p></div>
+<div class="step"><p>当主は<b>樽熟成を行わない</b>方針。果実と貴腐の香りをまっすぐに表現する。</p></div>
+<div class="step"><p>化石の岩盤セラーで、ボトルのまま長期熟成。</p></div>
+</div></div></details><details>
+<summary>貴腐（ノーブル・ロット）のしくみ</summary>
+<div class="in">
+<p>貴腐は、<b>ボトリティス・シネレア</b>というカビがブドウの皮に小さな穴をあけ、水分を蒸発させることで、糖・酸・香りが凝縮する現象。湿った朝（菌が広がる）と乾いた午後（ブドウが腐らずに干からびる）の繰り返しが条件です。</p>
+<p>同じ菌でも、雨が続くと品質を損なう「灰色かび病」になってしまう。だからこそ、貴腐がついた粒だけを選んで、畑を何度も回って収穫する<b>選果摘み（トリ）</b>が欠かせません。</p>
+<p>貴腐ワイン特有の<b>蜂蜜、アプリコット、サフラン</b>のような香りは、菌がつくることで生まれる成分によるものです。</p>
+</div>
+</details><details>
+<summary>熟成甘口の色と香りの変化</summary>
+<div class="in">
+<p>若い貴腐ワインは輝くような金色。熟成とともにゆっくり酸化が進み、<b>金色 → 琥珀色 → 赤みを帯びた銅色</b>へと深まっていきます。</p>
+<p>香りも、アプリコットや柑橘の皮といった果実から、<b>マーマレード、蜂蜜、カラメル、ナッツ、紅茶、スパイス</b>へ。甘さは少しずつ穏やかに感じられるようになり、酸と溶け合った複雑な味わいになります。</p>
+</div>
+</details><details class="more serve"><summary>🥂 楽しみ方（適温・グラス・飲み頃）</summary><div class="in"><div class="grid">
+<div class="cell"><span>適温</span><strong>10〜12℃</strong></div>
+<div class="cell"><span>シーン</span><strong>食後のデザートに</strong></div>
+<div class="cell full"><span>グラス</span><strong>小ぶりの白ワイングラス</strong></div>
+</div><p class="row" style="margin-top:14px"><b>💡 ポイント</b>冷やしすぎると熟成香が閉じてしまいます。古いボトルはコルクがもろくなっていることがあるので、ゆっくり慎重に抜栓を。開けてから少し空気に触れさせると香りが開きます。</p></div></details></div>
+<p class="wfoot">Château Loubens · Sainte-Croix-du-Mont 1995<br>シャトーの情報は取材記事・販売店資料より。1995年の香り・味わいは熟成貴腐ワインの一般的な特徴に基づく目安です。</p>
+<div class="foot">10 / 10</div></div>
+</div>
+</section>
+
+<section class="page" id="tips">
+  <div class="card">
+    <div class="ttl">📖 豆知識（用語集）</div>
+    <div class="intro">Glossary</div>
+    <div class="vc"><h4>メトード・アンセストラル<span class="en">Méthode Ancestrale</span></h4><p>発酵途中のワインを瓶に詰め、瓶内で発酵を終えさせて泡を生む、最も古いとされる製法。酵母や糖を加えず、甘みと低いアルコールが残りやすい。</p></div>
+    <div class="vc"><h4>伝統的製法<span class="en">Traditional Method</span></h4><p>瓶の中でもう一度発酵（二次発酵）させて泡を生む方法。シャンパーニュや英国の上質なスパークリングで使われる。</p></div>
+    <div class="vc"><h4>ドサージュ<span class="en">Dosage</span></h4><p>スパークリングの仕上げに加える糖分。量で甘辛が決まり、Brutは12 g/l未満。</p></div>
+    <div class="vc"><h4>オートリシス<span class="en">Autolysis</span></h4><p>瓶内で役目を終えた酵母が分解され、パンやトーストのような香りとクリーミーさを生む。</p></div>
+    <div class="vc"><h4>シュール・リー<span class="en">Sur Lie</span></h4><p>発酵後の酵母の澱（おり）とワインを長く接触させる手法。厚みのある口当たりと旨みが生まれる。</p></div>
+    <div class="vc"><h4>マロラクティック発酵<span class="en">MLF</span></h4><p>シャープなリンゴ酸を、まろやかな乳酸に変える発酵。行うとクリーミーに、行わないとフレッシュな酸が残る。</p></div>
+    <div class="vc"><h4>バトナージュ<span class="en">Bâtonnage</span></h4><p>樽やタンクの中の澱をかき混ぜること。口当たりに厚みとクリーミーさが加わる。</p></div>
+    <div class="vc"><h4>珪藻土<span class="en">Diatomaceous Earth</span></h4><p>珪藻（単細胞の藻類）の化石が積もってできた白い土。シリカが主成分で、水はけがよくやせている。</p></div>
+    <div class="vc"><h4>貴腐<span class="en">Noble Rot / Botrytis</span></h4><p>ボトリティス・シネレアという菌がブドウの水分を飛ばし、糖・酸・香りを凝縮させる現象。ソーテルヌやトカイの甘口ワインの源。</p></div>
+    <div class="vc"><h4>セカンドワイン<span class="en">Second Wine</span></h4><p>トップキュヴェと同じ造り手が、若木や別区画のブドウなどで造る、より手頃なワイン。造り手のスタイルを知る入口になる。</p></div>
+    <div class="vc"><h4>AVA<span class="en">American Viticultural Area</span></h4><p>アメリカの公式なブドウ栽培地域の区分。ナパ・ヴァレーの中に、オークヴィルなど小さなAVAがある。</p></div>
+    <div class="vc"><h4>新樽比率<span class="en">New Oak %</span></h4><p>熟成に使う樽のうち、初めて使う樽の割合。高いほどバニラやトーストなど樽の香りが強く出る。</p></div>
+  </div>
+</section>
+
+<a class="home" href="#top">🏠 表紙に戻る</a>
+</main>
+<footer class="site">味わい・飲み頃の表示は目安です。</footer>
+<a class="back hide" id="back" href="#top">🏠 表紙に戻る</a>
+<script>
+(function(){
+  var back=document.getElementById('back'), list=document.getElementById('winelist'), nav=document.getElementById('tabs');
+  var tabs=[].slice.call(nav.querySelectorAll('a'));
+  var targets=tabs.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var last=null;
+  function onScroll(){
+    var y=window.scrollY||window.pageYOffset;
+    back.classList.toggle('hide', y < list.offsetTop + list.offsetHeight - 120);
+    var cur=-1, line=y+80;
+    targets.forEach(function(t,i){ if(t && t.offsetTop<=line) cur=i; });
+    tabs.forEach(function(a,i){ a.classList.toggle('on', i===cur); });
+    var on=tabs[cur];
+    if(on && on!==last){ last=on; nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'}); }
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
